@@ -1,8 +1,8 @@
-// Service for mentorships
+// Service for mentors
 import { getToken } from './authService'
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'
-const MENTORSHIPS_PATH = '/api/mentorships'
+const MENTORS_PATH = '/api/mentors'
 
 function getJsonHeaders() {
 	const token = getToken()
@@ -28,38 +28,42 @@ async function handleJsonResponse(response) {
 	return data
 }
 
-export async function getAllMentorships(status = null) {
-	const url = status 
-		? `${API_BASE_URL}${MENTORSHIPS_PATH}?status=${encodeURIComponent(status)}`
-		: `${API_BASE_URL}${MENTORSHIPS_PATH}`
-	
-	const response = await fetch(url, {
+export async function getAllMentors() {
+	const response = await fetch(`${API_BASE_URL}${MENTORS_PATH}`, {
 		method: 'GET',
 		headers: getJsonHeaders()
 	})
 	return handleJsonResponse(response)
 }
 
-export async function createMentorship({ student_id, mentor_id, request_message }) {
-	const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}`, {
+export async function getMentorById(id) {
+	const response = await fetch(`${API_BASE_URL}${MENTORS_PATH}/${id}`, {
+		method: 'GET',
+		headers: getJsonHeaders()
+	})
+	return handleJsonResponse(response)
+}
+
+export async function createMentor(mentorData) {
+	const response = await fetch(`${API_BASE_URL}${MENTORS_PATH}`, {
 		method: 'POST',
 		headers: getJsonHeaders(),
-		body: JSON.stringify({ student_id, mentor_id, request_message })
+		body: JSON.stringify(mentorData)
 	})
 	return handleJsonResponse(response)
 }
 
-export async function updateMentorshipStatus(id, status) {
-	const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}/${id}/status`, {
-		method: 'PATCH',
+export async function updateMentor(id, mentorData) {
+	const response = await fetch(`${API_BASE_URL}${MENTORS_PATH}/${id}`, {
+		method: 'PUT',
 		headers: getJsonHeaders(),
-		body: JSON.stringify({ status })
+		body: JSON.stringify(mentorData)
 	})
 	return handleJsonResponse(response)
 }
 
-export async function deleteMentorship(id) {
-	const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}/${id}`, {
+export async function deleteMentor(id) {
+	const response = await fetch(`${API_BASE_URL}${MENTORS_PATH}/${id}`, {
 		method: 'DELETE',
 		headers: getJsonHeaders()
 	})
@@ -67,8 +71,9 @@ export async function deleteMentorship(id) {
 }
 
 export default {
-	getAllMentorships,
-	createMentorship,
-	updateMentorshipStatus,
-	deleteMentorship
+	getAllMentors,
+	getMentorById,
+	createMentor,
+	updateMentor,
+	deleteMentor
 }
