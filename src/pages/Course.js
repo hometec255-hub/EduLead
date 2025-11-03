@@ -737,8 +737,8 @@ function Course() {
               </div>
             </div>
           ) : (
-            <div style={styles.coursesGrid}>
-              {filteredCourses.map(course => (
+          <div style={styles.coursesGrid}>
+            {filteredCourses.map(course => (
               <div key={course.id} style={styles.courseCard}>
                 <div style={styles.courseImageContainer}>
                   <div style={{
@@ -820,7 +820,7 @@ function Course() {
                 </div>
               </div>
             ))}
-            </div>
+          </div>
           )}
         </div>
       </section>

@@ -3,6 +3,7 @@ import { getAllApplications, createApplication, updateApplicationStatus } from '
 import { getAllScholarships } from '../services/scholarshipService';
 import { getUser } from '../services/authService';
 import './Dashboard.css';
+import { generateApplicationsReport, generateApplicationsReportForCurrentUser } from '../utils/reportService';
 
 function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
@@ -28,10 +29,10 @@ function ApplicationsPage() {
       return;
     }
     setCurrentUser(user);
-    loadData();
+    loadData(user); // Pass user directly to loadData
   }, []);
 
-  const loadData = async () => {
+  const loadData = async (user = null) => {
     try {
       setLoading(true);
       const [applicationsData, scholarshipsData] = await Promise.all([
@@ -39,15 +40,22 @@ function ApplicationsPage() {
         getAllScholarships()
       ]);
       
+      // Use passed user or currentUser state
+      const userToFilter = user || currentUser;
+      
       // Show all applications for admin, filtered applications for other users
       let filteredApplications;
-      if (currentUser?.role === 'admin') {
+      if (userToFilter?.role === 'admin') {
         filteredApplications = applicationsData; // Admin sees all applications
       } else {
         filteredApplications = applicationsData.filter(app => 
-          app.student_id === currentUser?.id || app.user_id === currentUser?.id
+          app.student_id === userToFilter?.id || app.user_id === userToFilter?.id
         );
       }
+      
+      console.log('Current user:', userToFilter);
+      console.log('Filtered applications:', filteredApplications);
+      console.log('All applications:', applicationsData);
       
       setApplications(filteredApplications);
       setScholarships(scholarshipsData);
@@ -79,7 +87,7 @@ function ApplicationsPage() {
         goals: ''
       });
       setError(null); // Clear any errors on successful submission
-      loadData();
+      loadData(currentUser);
     } catch (err) {
       setError('Failed to submit application');
       console.error('Error submitting application:', err);
@@ -111,7 +119,7 @@ function ApplicationsPage() {
     try {
       await updateApplicationStatus({ id: applicationId, status: newStatus });
       setError(null);
-      loadData(); // Reload data to show updated status
+      loadData(currentUser); // Reload data to show updated status
     } catch (err) {
       setError(`Failed to update application status: ${err.message}`);
       console.error('Error updating application status:', err);
@@ -172,16 +180,28 @@ function ApplicationsPage() {
               }
             </div>
           </div>
-          {currentUser?.role !== 'admin' && (
-            <div className="dash-controls">
+          <div className="dash-controls">
+            {currentUser?.role !== 'admin' && (
               <button 
                 className="chip" 
                 onClick={() => setShowForm(!showForm)}
               >
                 {showForm ? 'Cancel' : '+ New Application'}
               </button>
-            </div>
-          )}
+            )}
+            <button 
+              className="chip" 
+              onClick={() => {
+                if (currentUser?.role && currentUser.role !== 'admin') {
+                  generateApplicationsReportForCurrentUser(currentUser)
+                } else {
+                  generateApplicationsReport()
+                }
+              }}
+            >
+              Download Report (PDF)
+            </button>
+          </div>
         </div>
 
         {/* Stats Cards */}

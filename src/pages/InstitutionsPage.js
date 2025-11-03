@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllInstitutions, createInstitution, updateInstitution, deleteInstitution } from '../services/institutionService';
 import './Dashboard.css';
+import { generateInstitutionsReport } from '../utils/reportService';
 
 function InstitutionsPage() {
   const [institutions, setInstitutions] = useState([]);
@@ -105,6 +106,12 @@ function InstitutionsPage() {
               onClick={() => setShowForm(!showForm)}
             >
               {showForm ? 'Cancel' : '+ Add Institution'}
+            </button>
+            <button 
+              className="chip" 
+              onClick={() => generateInstitutionsReport()}
+            >
+              Download Report (PDF)
             </button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllStudents, createStudent, updateStudent, deleteStudent } from '../services/studentService';
 import './Dashboard.css';
+import { generateStudentsReport } from '../utils/reportService';
 
 function StudentsPage() {
   const [students, setStudents] = useState([]);
@@ -103,6 +104,12 @@ function StudentsPage() {
               onClick={() => setShowForm(!showForm)}
             >
               {showForm ? 'Cancel' : '+ Add Student'}
+            </button>
+            <button 
+              className="chip" 
+              onClick={() => generateStudentsReport()}
+            >
+              Download Report (PDF)
             </button>
           </div>
         </div>

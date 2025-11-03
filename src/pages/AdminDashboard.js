@@ -5,6 +5,7 @@ import { getAllInstitutions } from '../services/institutionService'
 import { getAllScholarships } from '../services/scholarshipService'
 import { getAllApplications } from '../services/applicationService'
 import { getAllMentorships } from '../services/mentorshipService'
+import { generateAdminReport } from '../utils/reportService'
 
 function AdminDashboard() {
 	const [loading, setLoading] = useState(false)
@@ -20,7 +21,7 @@ function AdminDashboard() {
 			setLoading(true)
 			setError('')
 			try {
-				const usersPromise = (userService && userService.getAllUsers) ? userService.getAllUsers() : Promise.resolve([])
+				const usersPromise = (userService && userService.getAllUsers) ? userService.getAllUsers().catch(() => []) : Promise.resolve([])
 				const instPromise = getAllInstitutions ? getAllInstitutions() : Promise.resolve([])
 				const schPromise = getAllScholarships ? getAllScholarships() : Promise.resolve([])
 				const appsPromise = getAllApplications ? getAllApplications() : Promise.resolve([])
@@ -130,7 +131,8 @@ function AdminDashboard() {
 						<div className="dash-subtitle">{loading ? 'Loading latest metrics...' : 'Here\'s what\'s happening across the system.'}</div>
 					</div>
 					<div className="dash-controls">
-						<button className="chip" onClick={() => window.location.reload()}>Refresh</button>
+					<button className="chip" onClick={() => window.location.reload()}>Refresh</button>
+					<button className="chip" onClick={() => generateAdminReport()}>Download Report (PDF)</button>
 					</div>
 				</div>
 

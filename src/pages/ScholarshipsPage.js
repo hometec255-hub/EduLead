@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAllScholarships, createScholarship, updateScholarship, deleteScholarship } from '../services/scholarshipService';
 import { getAllInstitutions } from '../services/institutionService';
 import './Dashboard.css';
+import { generateScholarshipsReport } from '../utils/reportService';
 
 function ScholarshipsPage() {
   const [scholarships, setScholarships] = useState([]);
@@ -121,6 +122,12 @@ function ScholarshipsPage() {
               onClick={() => setShowForm(!showForm)}
             >
               {showForm ? 'Cancel' : '+ Add Scholarship'}
+            </button>
+            <button 
+              className="chip"
+              onClick={() => generateScholarshipsReport()}
+            >
+              Download Report (PDF)
             </button>
           </div>
         </div>

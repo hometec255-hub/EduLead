@@ -29,6 +29,10 @@ export async function getAllUsers() {
 		method: 'GET',
 		headers: getJsonHeaders()
 	})
+	// Gracefully handle missing endpoint for some environments
+	if (response.status === 404) {
+		return []
+	}
 	return handleJsonResponse(response)
 }
 

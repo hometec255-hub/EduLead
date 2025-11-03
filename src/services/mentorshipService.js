@@ -36,22 +36,22 @@ export async function getAllMentorships() {
 	return handleJsonResponse(response)
 }
 
-export async function createMentorship({ student_id, topic, description, start_date, end_date }) {
-	const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}`, {
-		method: 'POST',
-		headers: getJsonHeaders(),
-		body: JSON.stringify({ student_id, topic, description, start_date, end_date })
-	})
-	return handleJsonResponse(response)
+export async function createMentorship({ student_id, mentor_id, request_message, status }) {
+    const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}`, {
+        method: 'POST',
+        headers: getJsonHeaders(),
+        body: JSON.stringify({ student_id, mentor_id, request_message, status })
+    })
+    return handleJsonResponse(response)
 }
 
-export async function updateMentorship({ id, topic, description, start_date, end_date }) {
-	const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}/${id}`, {
-		method: 'PUT',
-		headers: getJsonHeaders(),
-		body: JSON.stringify({ topic, description, start_date, end_date })
-	})
-	return handleJsonResponse(response)
+export async function updateMentorship({ id, mentor_id, request_message, status }) {
+    const response = await fetch(`${API_BASE_URL}${MENTORSHIPS_PATH}/${id}`, {
+        method: 'PUT',
+        headers: getJsonHeaders(),
+        body: JSON.stringify({ mentor_id, request_message, status })
+    })
+    return handleJsonResponse(response)
 }
 
 export async function deleteMentorship(id) {
@@ -62,9 +62,11 @@ export async function deleteMentorship(id) {
 	return handleJsonResponse(response)
 }
 
+// Student request now uses createMentorship with request_message; keeping no separate endpoint
+
 export default {
 	getAllMentorships,
 	createMentorship,
 	updateMentorship,
-	deleteMentorship
+    deleteMentorship
 }

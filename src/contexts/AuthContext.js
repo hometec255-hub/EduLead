@@ -14,7 +14,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticatedState, setIsAuthenticatedState] = useState(false)
 
   useEffect(() => {
     checkAuthStatus()
@@ -25,15 +25,15 @@ export function AuthProvider({ children }) {
       if (isAuthenticated()) {
         const userData = getUser()
         setUser(userData)
-        setIsAuthenticated(true)
+        setIsAuthenticatedState(true)
       } else {
         setUser(null)
-        setIsAuthenticated(false)
+        setIsAuthenticatedState(false)
       }
     } catch (error) {
       console.error('Auth check failed:', error)
       setUser(null)
-      setIsAuthenticated(false)
+      setIsAuthenticatedState(false)
     } finally {
       setIsLoading(false)
     }
@@ -41,13 +41,13 @@ export function AuthProvider({ children }) {
 
   const login = (userData) => {
     setUser(userData)
-    setIsAuthenticated(true)
+    setIsAuthenticatedState(true)
   }
 
   const logoutUser = () => {
     logout()
     setUser(null)
-    setIsAuthenticated(false)
+    setIsAuthenticatedState(false)
   }
 
   const hasRole = (role) => {
@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
-    isAuthenticated,
+    isAuthenticated: isAuthenticatedState,
     isLoading,
     login,
     logout: logoutUser,

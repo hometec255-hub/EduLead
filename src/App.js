@@ -12,6 +12,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import ScholarshipsPage from './pages/ScholarshipsPage'
 import ApplicationsPage from './pages/ApplicationsPage'
 import MentorshipsPage from './pages/MentorshipsPage'
+import MentorsPage from './pages/MentorsPage'
 import ResourcesPage from './pages/ResourcesPage'
 import InstitutionsPage from './pages/InstitutionsPage'
 import StudentsPage from './pages/StudentsPage'
@@ -62,6 +63,7 @@ function App() {
           <Route path='scholarships' element={<ScholarshipsPage/>} />
           <Route path='applications' element={<ApplicationsPage/>} />
           <Route path='mentorships' element={<MentorshipsPage/>} />
+          <Route path='mentors' element={<MentorsPage/>} />
           <Route path='resources' element={<ResourcesPage/>} />
           <Route path='institutions' element={<InstitutionsPage/>} />
           <Route path='students' element={<StudentsPage/>} />

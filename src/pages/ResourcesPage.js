@@ -3,6 +3,7 @@ import './Dashboard.css'
 import { getAllResources, createResource } from '../services/resourceService'
 import { getUser } from '../services/authService'
 import { getAllUsers } from '../services/userService'
+import { generateResourcesReport } from '../utils/reportService'
 
 function ResourcesPage() {
 	const [items, setItems] = useState([])
@@ -85,7 +86,8 @@ function ResourcesPage() {
 						<div className="dash-subtitle">Upload and share useful materials</div>
 					</div>
 					<div className="dash-controls">
-						<button className="chip" onClick={() => setShowForm(!showForm)}>{showForm ? 'Cancel' : '+ Add Resource'}</button>
+					<button className="chip" onClick={() => setShowForm(!showForm)}>{showForm ? 'Cancel' : '+ Add Resource'}</button>
+					<button className="chip" onClick={() => generateResourcesReport()}>Download Report (PDF)</button>
 					</div>
 				</div>
 

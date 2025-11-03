@@ -12,7 +12,7 @@ function StudentArea() {
 					{ href: '/student', label: 'Overview' },
 					{ href: '/student/applications', label: 'Apply Scholarships', cta: true },
 					{ href: '/student/mentorships', label: 'Mentorships' },
-					{ href: '/student/resources', label: 'Resources' },
+					// Resources hidden for students per requirements
 				]}
 			>
 				<Outlet />

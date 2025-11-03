@@ -75,35 +75,39 @@ function Login() {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Email Address</label>
-              <Mail className="input-icon" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
-                placeholder="Enter your email"
-                required
-              />
+              <div className="input-wrapper">
+                <Mail className="input-icon" size={18} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-input"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
             </div>
 
             <div className="form-group">
               <label>Password</label>
-              <Lock className="input-icon" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-input"
-                placeholder="Enter your password"
-                required
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff /> : <Eye />}
-              </button>
+              <div className="input-wrapper">
+                <Lock className="input-icon" size={18} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="form-input"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <div className="options">
@@ -124,7 +128,7 @@ function Login() {
           <button className="social-btn">Continue with GitHub</button>
 
           <div className="signup-link">
-            Don't have an account? <a href="#">Sign up</a>
+            Don't have an account? <a href="/register">Sign up</a>
           </div>
         </div>
       </div>

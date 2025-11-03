@@ -14,6 +14,7 @@ function AdminArea() {
 					{ href: '/admin/applications', label: 'Applications' },
 					{ href: '/admin/mentorships', label: 'Mentorships' },
 					{ href: '/admin/resources', label: 'Resources' },
+					{ href: '/admin/mentors', label: 'Mentors' },
 					{ href: '/admin/institutions', label: 'Institutions' },
 					{ href: '/admin/students', label: 'Students' },
 				]}
