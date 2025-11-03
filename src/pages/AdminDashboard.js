@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import './Dashboard.css'
-import userService from '../services/userService'
+import { getAllStudents } from '../services/studentService'
+import { getAllMentors } from '../services/mentorService'
 import { getAllInstitutions } from '../services/institutionService'
 import { getAllScholarships } from '../services/scholarshipService'
 import { getAllApplications } from '../services/applicationService'
@@ -10,7 +11,8 @@ import { generateAdminReport } from '../utils/reportService'
 function AdminDashboard() {
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
-	const [users, setUsers] = useState([])
+	const [students, setStudents] = useState([])
+	const [mentors, setMentors] = useState([])
 	const [institutions, setInstitutions] = useState([])
 	const [scholarships, setScholarships] = useState([])
 	const [applications, setApplications] = useState([])
@@ -21,24 +23,31 @@ function AdminDashboard() {
 			setLoading(true)
 			setError('')
 			try {
+<<<<<<< HEAD
 				const usersPromise = (userService && userService.getAllUsers) ? userService.getAllUsers().catch(() => []) : Promise.resolve([])
+=======
+				const studentsPromise = getAllStudents ? getAllStudents() : Promise.resolve([])
+				const mentorsPromise = getAllMentors ? getAllMentors() : Promise.resolve([])
+>>>>>>> e7557214bff6219c7ae5cdd5af0e24deace49d26
 				const instPromise = getAllInstitutions ? getAllInstitutions() : Promise.resolve([])
 				const schPromise = getAllScholarships ? getAllScholarships() : Promise.resolve([])
 				const appsPromise = getAllApplications ? getAllApplications() : Promise.resolve([])
 				const mentsPromise = getAllMentorships ? getAllMentorships() : Promise.resolve([])
 
-				const [u, inst, sch, apps, ments] = await Promise.all([
-					usersPromise,
+				const [studs, ments, inst, sch, apps, mentships] = await Promise.all([
+					studentsPromise,
+					mentorsPromise,
 					instPromise,
 					schPromise,
 					appsPromise,
 					mentsPromise
 				])
-				setUsers(Array.isArray(u) ? u : [])
+				setStudents(Array.isArray(studs) ? studs : [])
+				setMentors(Array.isArray(ments) ? ments : [])
 				setInstitutions(Array.isArray(inst) ? inst : [])
 				setScholarships(Array.isArray(sch) ? sch : [])
 				setApplications(Array.isArray(apps) ? apps : [])
-				setMentorships(Array.isArray(ments) ? ments : [])
+				setMentorships(Array.isArray(mentships) ? mentships : [])
 			} catch (e) {
 				setError(e.message || 'Failed to load overview')
 			} finally {
@@ -49,12 +58,13 @@ function AdminDashboard() {
 	}, [])
 
 	const kpis = useMemo(() => {
-		const totalUsers = users.length
-		const mentors = users.filter(u => (u.role || '').toLowerCase() === 'mentor').length
+		const totalUsers = students.length + mentors.length
+		const mentorCount = mentors.length
+		const studentCount = students.length
 		const instCount = institutions.length
 		const pendingApps = applications.filter(a => a.status === 'pending').length
-		return { totalUsers, mentors, instCount, pendingApps }
-	}, [users, institutions, applications])
+		return { totalUsers, mentorCount, studentCount, instCount, pendingApps }
+	}, [students, mentors, institutions, applications])
 
 	// Build last-12-month buckets from applications created/applied dates
 	const activity = useMemo(() => {
@@ -139,8 +149,8 @@ function AdminDashboard() {
 				{error && <div className="card" style={{ borderColor: '#fee2e2' }}><div style={{ color: '#b91c1c', padding: 10 }}>{error}</div></div>}
 
 				<div className="kpi-grid">
-					<div className="kpi"><h4>Total users</h4><div className="num">{kpis.totalUsers}</div><div className="trend">{users.filter(u=>u.is_active===false).length} inactive</div></div>
-					<div className="kpi"><h4>Mentors</h4><div className="num">{kpis.mentors}</div><div className="trend">of {kpis.totalUsers} users</div></div>
+					<div className="kpi"><h4>Total users</h4><div className="num">{kpis.totalUsers}</div><div className="trend">{kpis.studentCount} students, {kpis.mentorCount} mentors</div></div>
+					<div className="kpi"><h4>Mentors</h4><div className="num">{kpis.mentorCount}</div><div className="trend">active mentors</div></div>
 					<div className="kpi"><h4>Institutions</h4><div className="num">{kpis.instCount}</div><div className="trend">connected</div></div>
 					<div className="kpi"><h4>Pending applications</h4><div className="num">{kpis.pendingApps}</div><div className="trend">awaiting review</div></div>
 				</div>
